@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthleteEdge | Georgia State Panthers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap');
+        
+        :root {
+            --gsu-blue: #0039A6;
+            --gsu-red: #C8102E;
+            --bg-dark: #0a0d1a;
+            --bg-card: #141829;
+            --bg-secondary: #1a1f36;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3bf;
+            --border: #2a3154;
+            --accent-blue: #4D90FE;
+            --success: #00C853;
+            --warning: #FFB300;
+            --error: #FF3D00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 2px solid var(--gsu-blue);
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gsu-red);
+        }
+        
+        .logo-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gsu-blue);
+            margin-bottom: 0.25rem;
+            letter-spacing: 1px;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem 1.1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .nav-link:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            background: var(--gsu-blue);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem 3rem;
+            overflow-y: auto;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--gsu-blue);
+        }
+        
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gsu-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 1.75rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gsu-blue), var(--gsu-red));
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gsu-blue);
+            box-shadow: 0 8px 24px rgba(0, 57, 166, 0.3);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gsu-blue);
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.9rem 1.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Barlow', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--gsu-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #002d7a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 57, 166, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 2px solid var(--gsu-blue);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gsu-blue);
+            color: white;
+        }
+        
+        .btn-accent {
+            background: var(--gsu-red);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background: #9e0c24;
+            transform: translateY(-2px);
+        }
+        
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 1.75rem;
+        }
+        
+        .feed-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--gsu-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .activity-item {
+            padding: 1.1rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-item:hover {
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+        
+        .activity-athlete {
+            font-weight: 600;
+            color: var(--gsu-blue);
+            font-size: 1.05rem;
+        }
+        
+        .activity-sport {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.15rem;
+        }
+        
+        .activity-detail {
+            color: var(--text-primary);
+            margin-top: 0.4rem;
+        }
+        
+        .activity-time {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+        
+        /* Forms */
+        .form-container {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 2.25rem;
+            max-width: 650px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Barlow', sans-serif;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--gsu-blue);
+            background: var(--bg-dark);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .form-checkbox {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--gsu-blue);
+        }
+        
+        /* Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            background: var(--bg-secondary);
+        }
+        
+        .search-filter-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1rem;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gsu-blue);
+        }
+        
+        .filter-select {
+            padding: 0.8rem 1rem;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            min-width: 160px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            text-align: left;
+            padding: 1.1rem 1.5rem;
+            background: var(--gsu-blue);
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 1.1rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        tbody tr {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-healthy {
+            background: rgba(0, 200, 83, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .status-injured {
+            background: rgba(255, 61, 0, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+        
+        .status-recovering {
+            background: rgba(255, 179, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        /* Athlete Profile */
+        .profile-header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--border);
+            border-left: 6px solid var(--gsu-blue);
+            border-radius: 10px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--gsu-blue);
+        }
+        
+        .profile-meta {
+            display: flex;
+            gap: 2.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .profile-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        .profile-meta-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .profile-meta-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .history-section {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .history-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--gsu-blue);
+            text-transform: uppercase;
+        }
+        
+        .history-item {
+            padding: 1.1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .history-details {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: rgba(0, 200, 83, 0.15);
+            border: 2px solid var(--success);
+            color: var(--success);
+            padding: 1.1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-title">ATHLETEEDGE</div>
+                <div class="logo-subtitle">Georgia State Panthers</div>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="roster">
+                            <span class="nav-icon">👥</span>
+                            <span>Athlete Roster</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="log-workout">
+                            <span class="nav-icon">💪</span>
+                            <span>Log Workout</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="log-treatment">
+                            <span class="nav-icon">🏥</span>
+                            <span>Log Treatment</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Georgia State Athletic Performance Overview</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Athletes Logged Today</div>
+                        <div class="stat-value" id="stat-today">18</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Treatments This Week</div>
+                        <div class="stat-value" id="stat-treatments">34</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Follow-ups Needed</div>
+                        <div class="stat-value" id="stat-followups">5</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="navigateTo('log-workout')">+ Log Workout</button>
+                    <button class="btn btn-accent" onclick="navigateTo('log-treatment')">+ Log Treatment</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('roster')">View Full Roster</button>
+                </div>
+
+                <div class="activity-feed">
+                    <h2 class="feed-title">Recent Activity</h2>
+                    <div id="activity-list"></div>
+                </div>
+            </div>
+
+            <!-- Athlete Roster Page -->
+            <div id="roster" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Athlete Roster</h1>
+                    <p class="page-subtitle">Georgia State student-athletes across all sports</p>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="search-filter-row">
+                            <input type="text" class="search-input" id="search-athletes" placeholder="Search by name...">
+                            <select class="filter-select" id="filter-sport">
+                                <option value="">All Sports</option>
+                                <option value="Football">Football</option>
+                                <option value="Men's Basketball">Men's Basketball</option>
+                                <option value="Women's Basketball">Women's Basketball</option>
+                                <option value="Women's Soccer">Women's Soccer</option>
+                                <option value="Men's Soccer">Men's Soccer</option>
+                                <option value="Baseball">Baseball</option>
+                                <option value="Women's Track & Field">Women's Track & Field</option>
+                                <option value="Beach Volleyball">Beach Volleyball</option>
+                            </select>
+                            <select class="filter-select" id="filter-status">
+                                <option value="">All Status</option>
+                                <option value="Healthy">Healthy</option>
+                                <option value="Injured">Injured</option>
+                                <option value="Recovering">Recovering</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Sport</th>
+                                <th>Position</th>
+                                <th>Year</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roster-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Log Workout Page -->
+            <div id="log-workout" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Log Workout</h1>
+                    <p class="page-subtitle">Record a training session for a student-athlete</p>
+                </div>
+
+                <div id="workout-success" class="success-message">
+                    ✓ Workout logged successfully!
+                </div>
+
+                <div class="form-container">
+                    <form id="workout-form">
+                        <div class="form-group">
+                            <label class="form-label">Select Athlete</label>
+                            <select class="form-select" id="workout-athlete" required>
+                                <option value="">Choose an athlete...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Exercise Name</label>
+                            <input type="text" class="form-input" id="workout-exercise" placeholder="e.g., Back Squat, Bench Press, Speed Training" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Sets</label>
+                                <input type="number" class="form-input" id="workout-sets" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Reps</label>
+                                <input type="number" class="form-input" id="workout-reps" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Weight (lbs)</label>
+                                <input type="number" class="form-input" id="workout-weight" min="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-input" id="workout-duration" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-textarea" id="workout-notes" placeholder="Any additional observations or coach comments..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Workout</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Log Treatment Page -->
+            <div id="log-treatment" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Log Treatment</h1>
+                    <p class="page-subtitle">Record an athletic training session</p>
+                </div>
+
+                <div id="treatment-success" class="success-message">
+                    ✓ Treatment logged successfully!
+                </div>
+
+                <div class="form-container">
+                    <form id="treatment-form">
+                        <div class="form-group">
+                            <label class="form-label">Select Athlete</label>
+                            <select class="form-select" id="treatment-athlete" required>
+                                <option value="">Choose an athlete...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Treatment Type</label>
+                            <select class="form-select" id="treatment-type" required>
+                                <option value="">Select treatment...</option>
+                                <option value="Physical Therapy">Physical Therapy</option>
+                                <option value="Athletic Training">Athletic Training</option>
+                                <option value="Massage Therapy">Massage Therapy</option>
+                                <option value="Ice Bath">Ice Bath/Cryotherapy</option>
+                                <option value="Taping">Taping/Wrapping</option>
+                                <option value="Stretching">Stretching Session</option>
+                                <option value="Cupping">Cupping Therapy</option>
+                                <option value="Dry Needling">Dry Needling</option>
+                                <option value="Rehab Exercise">Rehab Exercise</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Body Area</label>
+                            <input type="text" class="form-input" id="treatment-area" placeholder="e.g., Right Knee, Lower Back, Left Ankle" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-input" id="treatment-duration" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Treatment Notes</label>
+                            <textarea class="form-textarea" id="treatment-notes" placeholder="Details about the treatment, athlete response, progress notes..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="form-checkbox" id="treatment-followup">
+                                <label class="form-label" for="treatment-followup">Follow-up treatment needed</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-accent">Save Treatment</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Athlete Profile Page -->
+            <div id="athlete-profile" class="page">
+                <div class="page-header">
+                    <button class="btn btn-secondary" onclick="navigateTo('roster')">&larr; Back to Roster</button>
+                </div>
+
+                <div class="profile-header">
+                    <h1 class="profile-name" id="profile-name"></h1>
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <span class="profile-meta-label">Sport</span>
+                            <span class="profile-meta-value" id="profile-sport"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <span class="profile-meta-label">Position</span>
+                            <span class="profile-meta-value" id="profile-position"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <span class="profile-meta-label">Year</span>
+                            <span class="profile-meta-value" id="profile-year"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <span class="profile-meta-label">Status</span>
+                            <span id="profile-status"></span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="navigateTo('log-workout')">+ Log Workout</button>
+                        <button class="btn btn-accent" onclick="navigateTo('log-treatment')">+ Log Treatment</button>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h2 class="history-title">Workout History</h2>
+                    <div id="profile-workouts"></div>
+                </div>
+
+                <div class="history-section">
+                    <h2 class="history-title">Treatment History</h2>
+                    <div id="profile-treatments"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Real GSU Athletes Data
+        const athletes = [
+            // Women's Soccer
+            { id: 1, name: "Ariana Anderson", sport: "Women's Soccer", position: "Goalkeeper", year: "R-So", status: "Recovering" },
+            { id: 2, name: "Emily Glenn", sport: "Women's Soccer", position: "Forward", year: "Sr", status: "Healthy" },
+            { id: 3, name: "Himari Sato", sport: "Women's Soccer", position: "Midfielder", year: "Jr", status: "Healthy" },
+            { id: 4, name: "Reese Gordon", sport: "Women's Soccer", position: "Forward", year: "Sr", status: "Healthy" },
+            
+            // Men's Soccer
+            { id: 5, name: "Loan Marin", sport: "Men's Soccer", position: "Goalkeeper", year: "Sr", status: "Healthy" },
+            { id: 6, name: "Gustavo Marques", sport: "Men's Soccer", position: "Forward", year: "Sr", status: "Healthy" },
+            { id: 7, name: "Gavin Williams", sport: "Men's Soccer", position: "Midfielder", year: "Sr", status: "Healthy" },
+            
+            // Football
+            { id: 8, name: "PJ Hatter", sport: "Football", position: "Quarterback", year: "R-Jr", status: "Healthy" },
+            { id: 9, name: "Jamal Bing Jr.", sport: "Football", position: "Running Back", year: "R-Jr", status: "Healthy" },
+            { id: 10, name: "DJ Riles", sport: "Football", position: "Wide Receiver", year: "R-Sr", status: "Recovering" },
+            { id: 11, name: "Demonte Gaston", sport: "Football", position: "Safety", year: "R-Sr", status: "Healthy" },
+            
+            // Men's Basketball
+            { id: 12, name: "Jakai Newton", sport: "Men's Basketball", position: "Guard", year: "R-So", status: "Healthy" },
+            { id: 13, name: "James Cooper", sport: "Men's Basketball", position: "Forward", year: "Gr", status: "Healthy" },
+            { id: 14, name: "Christian Beam", sport: "Men's Basketball", position: "Center", year: "So", status: "Injured" },
+            { id: 15, name: "Malachi Brown", sport: "Men's Basketball", position: "Guard", year: "Jr", status: "Healthy" },
+            
+            // Women's Basketball
+            { id: 16, name: "Morgan Robinson-Nwagwu", sport: "Women's Basketball", position: "Guard", year: "Gr", status: "Healthy" },
+            { id: 17, name: "Kaleigh Addie", sport: "Women's Basketball", position: "Guard", year: "Sr", status: "Healthy" },
+            { id: 18, name: "Cheyenne Holloman", sport: "Women's Basketball", position: "Guard", year: "Gr", status: "Recovering" },
+            
+            // Baseball
+            { id: 19, name: "Cole Roberts", sport: "Baseball", position: "RHP", year: "Sr", status: "Healthy" },
+            { id: 20, name: "Hunter Carlson", sport: "Baseball", position: "Catcher", year: "So", status: "Healthy" },
+            { id: 21, name: "Nick Garagozzo", sport: "Baseball", position: "Infield", year: "Gr", status: "Healthy" },
+            
+            // Women's Track & Field
+            { id: 22, name: "Shannon Cook", sport: "Women's Track & Field", position: "Distance", year: "Gr", status: "Healthy" },
+            { id: 23, name: "Kevell Byrd", sport: "Women's Track & Field", position: "Sprints", year: "Sr", status: "Healthy" },
+            { id: 24, name: "Gabrielle Key", sport: "Women's Track & Field", position: "Jumps", year: "Jr", status: "Recovering" },
+            
+            // Beach Volleyball
+            { id: 25, name: "Kaebre Sullivan", sport: "Beach Volleyball", position: "Blocker", year: "Sr", status: "Healthy" },
+            { id: 26, name: "Kate Phelan", sport: "Beach Volleyball", position: "Blocker", year: "So", status: "Healthy" },
+            { id: 27, name: "Michaela Jefferson", sport: "Beach Volleyball", position: "Defender", year: "Jr", status: "Healthy" }
+        ];
+
+        let workouts = [
+            { id: 1, athleteId: 1, athlete: "Ariana Anderson", sport: "Women's Soccer", date: "2026-03-02", exercise: "Goblet Squat", sets: 4, reps: 8, weight: 45, duration: 45, notes: "Week 9-10 Spring phase, working at 73% max. Knee tracking well, no pain", time: "2 hours ago" },
+            { id: 2, athleteId: 2, athlete: "Emily Glenn", sport: "Women's Soccer", date: "2026-03-02", exercise: "BB RDL (Romanian Deadlift)", sets: 3, reps: 6, weight: 115, duration: 40, notes: "Week 9-10 lift, 73% intensity. Focused on hip hinge mechanics", time: "2 hours ago" },
+            { id: 3, athleteId: 3, athlete: "Himari Sato", sport: "Women's Soccer", date: "2026-03-02", exercise: "DB Split Squat", sets: 3, reps: 8, weight: 30, duration: 35, notes: "ROM and knee-over-toe emphasis. Balance improving each set", time: "3 hours ago" },
+            { id: 4, athleteId: 8, athlete: "PJ Hatter", sport: "Football", date: "2026-03-02", exercise: "Barbell Bench Press", sets: 4, reps: 5, weight: 225, duration: 50, notes: "Upper body power day, working toward spring max testing", time: "3 hours ago" },
+            { id: 5, athleteId: 12, athlete: "Jakai Newton", sport: "Men's Basketball", date: "2026-03-02", exercise: "Trap Bar Deadlift", sets: 5, reps: 5, weight: 275, duration: 45, notes: "Explosive triple extension focus, new PR on last set", time: "4 hours ago" },
+            { id: 6, athleteId: 16, athlete: "Morgan Robinson-Nwagwu", sport: "Women's Basketball", date: "2026-03-02", exercise: "Back Squat", sets: 4, reps: 6, weight: 165, duration: 50, notes: "Depth and bar speed excellent. Building toward conference tournament", time: "4 hours ago" },
+            { id: 7, athleteId: 4, athlete: "Reese Gordon", sport: "Women's Soccer", date: "2026-03-01", exercise: "Front Plank Hip Extension", sets: 3, reps: 12, weight: 0, duration: 20, notes: "Core stability work. Hold quality maintained across all sets", time: "1 day ago" },
+            { id: 8, athleteId: 10, athlete: "DJ Riles", sport: "Football", date: "2026-03-01", exercise: "Sled Push", sets: 6, reps: 4, weight: 180, duration: 30, notes: "Return to play progression. Hamstring felt strong, cleared for cutting drills", time: "1 day ago" },
+            { id: 9, athleteId: 22, athlete: "Shannon Cook", sport: "Women's Track & Field", date: "2026-03-01", exercise: "Tempo Run", sets: 1, reps: 1, weight: 0, duration: 55, notes: "6 miles at race pace minus 20 sec/mile. Felt controlled and efficient", time: "1 day ago" },
+            { id: 10, athleteId: 6, athlete: "Gustavo Marques", sport: "Men's Soccer", date: "2026-03-01", exercise: "Box Squat", sets: 4, reps: 5, weight: 185, duration: 40, notes: "Paused reps to build starting strength. Good bar speed off the box", time: "1 day ago" }
+        ];
+
+        let treatments = [
+            { id: 1, athleteId: 1, athlete: "Ariana Anderson", sport: "Women's Soccer", date: "2026-03-02", type: "Athletic Training", area: "Right Knee", duration: 30, notes: "Post-lift knee maintenance - ice, compression, mobility work. Range of motion excellent, no effusion", followup: false, time: "2 hours ago" },
+            { id: 2, athleteId: 3, athlete: "Himari Sato", sport: "Women's Soccer", date: "2026-03-02", type: "Massage Therapy", area: "Hip Flexors / Quads", duration: 25, notes: "Pre-game soft tissue work. Addressed tightness from high training volume this week", followup: false, time: "3 hours ago" },
+            { id: 3, athleteId: 14, athlete: "Christian Beam", sport: "Men's Basketball", date: "2026-03-02", type: "Ice Bath", area: "Full Body", duration: 12, notes: "Post-practice recovery protocol. Managing lower back soreness from heavy practice load", followup: false, time: "4 hours ago" },
+            { id: 4, athleteId: 10, athlete: "DJ Riles", sport: "Football", date: "2026-03-02", type: "Physical Therapy", area: "Right Hamstring", duration: 35, notes: "Grade 1 hamstring strain rehab - eccentric strengthening, soft tissue mobilization. Day 10 of recovery, progressing to cutting drills next session", followup: true, time: "4 hours ago" },
+            { id: 5, athleteId: 18, athlete: "Cheyenne Holloman", sport: "Women's Basketball", date: "2026-03-02", type: "Taping", area: "Left Ankle", duration: 8, notes: "Preventative ankle support for practice. History of chronic instability, using high-top taping technique", followup: false, time: "5 hours ago" },
+            { id: 6, athleteId: 24, athlete: "Gabrielle Key", sport: "Women's Track & Field", date: "2026-03-01", type: "Stretching", area: "Lower Back / Hips", duration: 25, notes: "Dynamic flexibility work. Addressing tightness from high volume jumping this week", followup: true, time: "1 day ago" },
+            { id: 7, athleteId: 2, athlete: "Emily Glenn", sport: "Women's Soccer", date: "2026-03-01", type: "Cupping", area: "Calves", duration: 20, notes: "Soft tissue recovery for calf tightness. Athlete reports improved ankle mobility post-treatment", followup: false, time: "1 day ago" },
+            { id: 8, athleteId: 9, athlete: "Jamal Bing Jr.", sport: "Football", date: "2026-03-01", type: "Dry Needling", area: "Glutes / Piriformis", duration: 30, notes: "Addressing sciatic nerve irritation from overactive piriformis. Significant symptom relief reported", followup: true, time: "1 day ago" }
+        ];
+
+        let currentAthleteId = null;
+
+        // Navigation
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            const navLink = document.querySelector(`[data-page="${pageId}"]`);
+            if (navLink) navLink.classList.add('active');
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const pageId = this.getAttribute('data-page');
+                navigateTo(pageId);
+            });
+        });
+
+        // Populate athlete dropdowns
+        function populateAthleteDropdowns() {
+            const workoutSelect = document.getElementById('workout-athlete');
+            const treatmentSelect = document.getElementById('treatment-athlete');
+            
+            athletes.forEach(athlete => {
+                const option1 = document.createElement('option');
+                option1.value = athlete.id;
+                option1.textContent = `${athlete.name} - ${athlete.sport}`;
+                workoutSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = athlete.id;
+                option2.textContent = `${athlete.name} - ${athlete.sport}`;
+                treatmentSelect.appendChild(option2);
+            });
+        }
+
+        // Render activity feed
+        function renderActivityFeed() {
+            const activityList = document.getElementById('activity-list');
+            const combined = [
+                ...workouts.map(w => ({ ...w, type: 'workout' })),
+                ...treatments.map(t => ({ ...t, type: 'treatment' }))
+            ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
+            
+            activityList.innerHTML = combined.map(item => {
+                const detail = item.type === 'workout' 
+                    ? `<strong>${item.exercise}</strong> - ${item.duration} min`
+                    : `<strong>${item.type}</strong> (${item.area}) - ${item.duration} min`;
+                    
+                return `
+                    <div class="activity-item">
+                        <div class="activity-athlete">${item.athlete}</div>
+                        <div class="activity-sport">${item.sport}</div>
+                        <div class="activity-detail">${detail}</div>
+                        <div class="activity-time">${item.time}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render roster table
+        function renderRosterTable(filteredAthletes = athletes) {
+            const tbody = document.getElementById('roster-table-body');
+            tbody.innerHTML = filteredAthletes.map(athlete => `
+                <tr onclick="viewAthleteProfile(${athlete.id})">
+                    <td><strong>${athlete.name}</strong></td>
+                    <td>${athlete.sport}</td>
+                    <td>${athlete.position}</td>
+                    <td>${athlete.year}</td>
+                    <td><span class="status-badge status-${athlete.status.toLowerCase()}">${athlete.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter roster
+        function filterRoster() {
+            const searchTerm = document.getElementById('search-athletes').value.toLowerCase();
+            const sportFilter = document.getElementById('filter-sport').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            
+            const filtered = athletes.filter(athlete => {
+                const matchesSearch = athlete.name.toLowerCase().includes(searchTerm);
+                const matchesSport = !sportFilter || athlete.sport === sportFilter;
+                const matchesStatus = !statusFilter || athlete.status === statusFilter;
+                return matchesSearch && matchesSport && matchesStatus;
+            });
+            
+            renderRosterTable(filtered);
+        }
+
+        document.getElementById('search-athletes').addEventListener('input', filterRoster);
+        document.getElementById('filter-sport').addEventListener('change', filterRoster);
+        document.getElementById('filter-status').addEventListener('change', filterRoster);
+
+        // View athlete profile
+        function viewAthleteProfile(athleteId) {
+            currentAthleteId = athleteId;
+            const athlete = athletes.find(a => a.id === athleteId);
+            
+            document.getElementById('profile-name').textContent = athlete.name;
+            document.getElementById('profile-sport').textContent = athlete.sport;
+            document.getElementById('profile-position').textContent = athlete.position;
+            document.getElementById('profile-year').textContent = athlete.year;
+            document.getElementById('profile-status').innerHTML = 
+                `<span class="status-badge status-${athlete.status.toLowerCase()}">${athlete.status}</span>`;
+            
+            const athleteWorkouts = workouts.filter(w => w.athleteId === athleteId);
+            const athleteTreatments = treatments.filter(t => t.athleteId === athleteId);
+            
+            document.getElementById('profile-workouts').innerHTML = athleteWorkouts.length > 0 
+                ? athleteWorkouts.map(w => `
+                    <div class="history-item">
+                        <div class="history-date">${w.date}</div>
+                        <div class="history-details">
+                            <strong>${w.exercise}</strong> - ${w.sets}x${w.reps}${w.weight > 0 ? ` @ ${w.weight}lbs` : ''}, ${w.duration} min
+                            ${w.notes ? `<br><em>${w.notes}</em>` : ''}
+                        </div>
+                    </div>
+                `).join('')
+                : '<p style="color: var(--text-secondary); padding: 1rem;">No workout history recorded</p>';
+            
+            document.getElementById('profile-treatments').innerHTML = athleteTreatments.length > 0
+                ? athleteTreatments.map(t => `
+                    <div class="history-item">
+                        <div class="history-date">${t.date}</div>
+                        <div class="history-details">
+                            <strong>${t.type}</strong> - ${t.area}, ${t.duration} min
+                            ${t.notes ? `<br><em>${t.notes}</em>` : ''}
+                            ${t.followup ? '<br><span style="color: var(--warning); font-weight: 600;">⚠️ Follow-up needed</span>' : ''}
+                        </div>
+                    </div>
+                `).join('')
+                : '<p style="color: var(--text-secondary); padding: 1rem;">No treatment history recorded</p>';
+            
+            navigateTo('athlete-profile');
+        }
+
+        // Handle workout form submission
+        document.getElementById('workout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const athleteId = parseInt(document.getElementById('workout-athlete').value);
+            const athlete = athletes.find(a => a.id === athleteId);
+            
+            const newWorkout = {
+                id: workouts.length + 1,
+                athleteId: athleteId,
+                athlete: athlete.name,
+                sport: athlete.sport,
+                date: new Date().toISOString().split('T')[0],
+                exercise: document.getElementById('workout-exercise').value,
+                sets: parseInt(document.getElementById('workout-sets').value),
+                reps: parseInt(document.getElementById('workout-reps').value),
+                weight: parseInt(document.getElementById('workout-weight').value),
+                duration: parseInt(document.getElementById('workout-duration').value),
+                notes: document.getElementById('workout-notes').value,
+                time: "Just now"
+            };
+            
+            workouts.unshift(newWorkout);
+            
+            document.getElementById('workout-success').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('workout-success').classList.remove('show');
+            }, 3000);
+            
+            document.getElementById('workout-form').reset();
+            renderActivityFeed();
+            
+            const todayStat = document.getElementById('stat-today');
+            todayStat.textContent = parseInt(todayStat.textContent) + 1;
+        });
+
+        // Handle treatment form submission
+        document.getElementById('treatment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const athleteId = parseInt(document.getElementById('treatment-athlete').value);
+            const athlete = athletes.find(a => a.id === athleteId);
+            
+            const newTreatment = {
+                id: treatments.length + 1,
+                athleteId: athleteId,
+                athlete: athlete.name,
+                sport: athlete.sport,
+                date: new Date().toISOString().split('T')[0],
+                type: document.getElementById('treatment-type').value,
+                area: document.getElementById('treatment-area').value,
+                duration: parseInt(document.getElementById('treatment-duration').value),
+                notes: document.getElementById('treatment-notes').value,
+                followup: document.getElementById('treatment-followup').checked,
+                time: "Just now"
+            };
+            
+            treatments.unshift(newTreatment);
+            
+            document.getElementById('treatment-success').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('treatment-success').classList.remove('show');
+            }, 3000);
+            
+            document.getElementById('treatment-form').reset();
+            renderActivityFeed();
+            
+            const treatmentStat = document.getElementById('stat-treatments');
+            treatmentStat.textContent = parseInt(treatmentStat.textContent) + 1;
+            
+            if (newTreatment.followup) {
+                const followupStat = document.getElementById('stat-followups');
+                followupStat.textContent = parseInt(followupStat.textContent) + 1;
+            }
+        });
+
+        // Initialize app
+        populateAthleteDropdowns();
+        renderActivityFeed();
+        renderRosterTable();
+    </script>
+</body>
+</html>
