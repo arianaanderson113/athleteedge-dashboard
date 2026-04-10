@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthleteEdge | Georgia State University Athletics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+        
+        :root {
+            --gsu-blue: #0039A6;
+            --gsu-red: #C8102E;
+            --bg-dark: #0a0d1a;
+            --bg-card: #141829;
+            --bg-secondary: #1a1f36;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3bf;
+            --border: #2a3154;
+            --accent-blue: #4D90FE;
+            --success: #00C853;
+            --warning: #FFB300;
+            --error: #FF3D00;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gsu-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .user-type-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .user-type-btn {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .user-type-btn:hover {
+            border-color: var(--gsu-blue);
+        }
+        
+        .user-type-btn.active {
+            background: var(--gsu-blue);
+            border-color: var(--gsu-blue);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--gsu-blue);
+            box-shadow: 0 0 0 3px rgba(0, 57, 166, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background: var(--gsu-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #002d80;
+        }
+        
+        .error-message {
+            display: none;
+            background: rgba(255, 61, 0, 0.15);
+            color: var(--error);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--error);
+            font-size: 0.9rem;
+        }
+        
+        .success-message {
+            display: none;
+            background: rgba(0, 200, 83, 0.15);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--success);
+            font-size: 0.9rem;
+        }
+        
+        /* Main App */
+        .app-container {
+            display: none;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 1.5rem 1rem;
+        }
+        
+        .logo-title {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gsu-blue);
+        }
+        
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .user-info {
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            margin: 0 1rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(77, 144, 254, 0.1);
+        }
+        
+        .nav-link.active {
+            color: var(--gsu-blue);
+            background: rgba(0, 57, 166, 0.1);
+            border-right: 3px solid var(--gsu-blue);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .logout-btn {
+            margin: 1rem 1rem 0;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .logout-btn:hover {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 2rem 3rem;
+            overflow-y: auto;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        /* Chat */
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .chat-messages {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            min-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .user-message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .user-message-content {
+            background: var(--gsu-blue);
+            padding: 1rem 1.5rem;
+            border-radius: 12px 12px 0 12px;
+            max-width: 70%;
+        }
+        
+        .assistant-message {
+            margin-bottom: 1.5rem;
+        }
+        
+        .assistant-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gsu-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .assistant-content {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--gsu-blue);
+        }
+        
+        .info-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--gsu-blue);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .info-box h4 {
+            margin-bottom: 0.75rem;
+            color: var(--gsu-blue);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-logo">AthleteEdge</div>
+                <div class="login-subtitle">Georgia State University Athletics</div>
+            </div>
+
+            <div id="login-error" class="error-message"></div>
+
+            <div class="form-group">
+                <label class="form-label">I am a:</label>
+                <div class="user-type-select">
+                    <button class="user-type-btn" id="athlete-btn" onclick="selectUserType('athlete')">
+                        Athlete
+                    </button>
+                    <button class="user-type-btn" id="coach-btn" onclick="selectUserType('coach')">
+                        Coach
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">GSU Username</label>
+                <input 
+                    type="text" 
+                    id="username-input" 
+                    class="form-input" 
+                    placeholder="e.g., aanderson42"
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password-input" 
+                    class="form-input" 
+                    placeholder="Enter your password"
+                    onkeypress="if(event.key==='Enter') attemptLogin()"
+                >
+            </div>
+
+            <button class="btn btn-primary" onclick="attemptLogin()">
+                Login to AthleteEdge
+            </button>
+
+            <div class="info-box" style="margin-top: 2rem;">
+                <h4>Demo Credentials</h4>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                    <strong>Athlete:</strong> aanderson42 / Password123!<br>
+                    <strong>Coach:</strong> jsmith5 / Coach456#
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-container" class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-title">AthleteEdge</div>
+                <div class="logo-subtitle">Georgia State Panthers</div>
+            </div>
+
+            <div class="user-info">
+                <div class="user-name" id="display-username"></div>
+                <div class="user-role" id="display-role"></div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard">
+                            <span class="nav-icon">■</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="ai-assistant">
+                            <span class="nav-icon">▥</span>
+                            <span>AI Assistant</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Welcome to AthleteEdge</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>🎓 AthleteEdge AI System</h4>
+                    <div style="color: var(--text-secondary); line-height: 1.8;">
+                        <p><strong style="color: var(--text-primary);">Powered by Google Gemini AI</strong></p>
+                        <p style="margin-top: 0.5rem;">• Privacy-protected athletic performance assistant</p>
+                        <p>• NO hallucinations - only cited, factual information</p>
+                        <p>• Role-based access (Student vs Coach capabilities)</p>
+                        <p>• Blocks inappropriate requests (homework help, privacy violations)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistant -->
+            <div id="ai-assistant" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">AI Assistant</h1>
+                    <p class="page-subtitle">Ask questions about athletic performance - Powered by Google Gemini</p>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="assistant-message">
+                            <div class="assistant-label">AI ASSISTANT (GEMINI)</div>
+                            <div class="assistant-content">
+                                Hello! I'm your AthleteEdge AI Assistant powered by Google Gemini. I can help with:
+                                <ul style="margin-top: 1rem; margin-left: 1.5rem; line-height: 1.8;">
+                                    <li><strong>Athletic Performance:</strong> Training protocols, workout analysis</li>
+                                    <li><strong>Rehabilitation:</strong> ACL rehab guidelines, recovery timelines</li>
+                                    <li><strong>Progress Tracking:</strong> Personal metrics, team comparisons</li>
+                                    <li><strong>Evidence-Based:</strong> Cited medical research, no hallucinations</li>
+                                </ul>
+                                <p style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 179, 0, 0.1); border-radius: 6px; border-left: 3px solid var(--warning);">
+                                    <strong>Privacy Protected:</strong> I won't help with homework, make demeaning comparisons, or violate student privacy.
+                                </p>
+                                <p style="margin-top: 1rem;"><strong>Try asking:</strong> "What are best practices for ACL rehab?"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <input 
+                            type="text" 
+                            id="chat-input" 
+                            class="form-input" 
+                            placeholder="Ask a question about athlete data..." 
+                            style="flex: 1;"
+                            onkeypress="if(event.key==='Enter') sendMessage()"
+                        >
+                        <button class="btn btn-primary" id="send-btn" onclick="sendMessage()" style="width: auto; padding: 0 2rem;">
+                            Send
+                        </button>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>✅ Powered by Google Gemini AI</h4>
+                        <div style="color: var(--text-secondary); line-height: 1.8;">
+                            <p>Your questions are processed using Google Gemini with athlete database context to provide intelligent, privacy-protected, evidence-based responses.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // =====================================================================
+        // GLOBAL STATE & API KEY
+        // =====================================================================
+        
+        const GEMINI_API_KEY = 'AIzaSyDLQO1TJxTvHNQS9nbjoxdfuYTZzcJlY4k';
+        let currentUser = null;
+        let selectedUserType = null;
+
+        // Demo credentials
+        const validCredentials = {
+            'aanderson42': { password: 'Password123!', name: 'Ariana Anderson', type: 'athlete' },
+            'jsmith5': { password: 'Coach456#', name: 'Coach Smith', type: 'coach' }
+        };
+
+        // Athlete database
+        const database = {
+            athletes: [
+                { id: 1, username: 'aanderson42', name: "Ariana Anderson", sport: "Women's Soccer", position: "Goalkeeper" },
+                { id: 2, username: 'cbeam14', name: "Christian Beam", sport: "Men's Basketball", position: "Center" },
+                { id: 3, username: 'eglenn7', name: "Emily Glenn", sport: "Women's Soccer", position: "Forward" }
+            ],
+            workouts: [
+                { athleteId: 1, username: 'aanderson42', type: 'team', date: "2026-03-10", exercise: "Goblet Squat", sets: 4, reps: 8, weight: 45, notes: "ACL rehab protocol - week 12" },
+                { athleteId: 1, username: 'aanderson42', type: 'team', date: "2026-03-10", exercise: "BB RDL", sets: 3, reps: 6, weight: 115 },
+                { athleteId: 1, username: 'aanderson42', type: 'rehab', date: "2026-03-08", exercise: "Single-Leg RDL", sets: 3, reps: 10, weight: 0, notes: "Balance and stability focus" },
+                { athleteId: 1, username: 'aanderson42', type: 'team', date: "2026-03-15", exercise: "Bench Press", sets: 4, reps: 6, weight: 95 },
+                { athleteId: 1, username: 'aanderson42', type: 'team', date: "2026-03-15", exercise: "CMJ (Countermovement Jump)", sets: 3, reps: 5, height_cm: 45 },
+                { athleteId: 2, username: 'cbeam14', type: 'team', date: "2026-03-09", exercise: "Back Squat", sets: 5, reps: 5, weight: 225 },
+                { athleteId: 2, username: 'cbeam14', type: 'rehab', date: "2026-03-09", exercise: "Box Squats", sets: 4, reps: 6, weight: 135, notes: "Knee rehab" },
+                { athleteId: 3, username: 'eglenn7', type: 'team', date: "2026-03-12", exercise: "Trap Bar Deadlift", sets: 4, reps: 5, weight: 185 }
+            ]
+        };
+
+        // =====================================================================
+        // PRIVACY FILTER
+        // =====================================================================
+        
+        function checkIfQuestionIsBlocked(query) {
+            const lower = query.toLowerCase();
+            
+            // Block homework/academic dishonesty
+            if (lower.includes('homework') || lower.includes('cheat') || lower.includes('essay') || lower.includes('assignment')) {
+                return `⚠️ QUESTION NOT ALLOWED
+
+This assistant is for athletic performance questions only.
+
+I cannot help with:
+• Homework or assignments
+• Academic dishonesty
+• Test/exam answers
+
+Please ask about:
+• Training protocols
+• Performance metrics
+• Rehabilitation guidelines
+• Team progress analytics`;
+            }
+
+            // Block privacy-violating comparisons
+            if (lower.includes('weakest') || lower.includes('worst') || lower.includes('laziest') || lower.includes('slowest')) {
+                return `⚠️ PRIVACY-VIOLATING QUESTION
+
+I cannot rank athletes by weakness or make demeaning comparisons.
+
+Instead, I can show you:
+• Team averages and trends
+• Progress metrics
+• Areas for improvement
+• Strength development data
+
+Would you like a team performance analysis instead?`;
+            }
+
+            // Block medical diagnoses
+            if (lower.includes('diagnose') || lower.includes('medical advice')) {
+                return `⚠️ OUTSIDE MY SCOPE
+
+I cannot provide medical diagnoses or clinical advice.
+
+For medical concerns, please consult:
+• Team physician
+• Athletic trainer
+• Sports medicine specialist
+
+I can help with:
+• General rehab protocols
+• Evidence-based training guidelines
+• Performance analytics`;
+            }
+
+            return null;
+        }
+
+        // =====================================================================
+        // SYSTEM PROMPT BUILDER
+        // =====================================================================
+        
+        function buildSystemPrompt(user, db) {
+            const isCoach = user.type === 'coach';
+            
+            return `You are an athletic performance AI assistant for AthleteEdge at Georgia State University.
+
+CRITICAL RULES - NO HALLUCINATIONS:
+1. ONLY answer questions about athletics, training, rehabilitation, and performance
+2. CITE sources for medical/scientific claims (e.g., "According to JOSPT 2019...")
+3. If you don't have specific data in the database, say "I don't have that information in the current database"
+4. NEVER make up athlete data - only use the provided database
+5. Be respectful and maintain student-athlete privacy
+6. Ground all answers in facts from the database or published research
+
+USER CONTEXT:
+- Role: ${user.type}
+- Name: ${user.name}
+- Username: ${user.username}
+${isCoach ? '- Access: Can view all athletes and team data' : '- Access: Can view only personal data'}
+
+DATABASE CONTEXT:
+${JSON.stringify(db, null, 2)}
+
+${isCoach ? `
+COACH CAPABILITIES:
+- Compare athletes across teams
+- Analyze team performance trends
+- Provide cross-functional insights
+- Reference all athlete data in database
+` : `
+STUDENT CAPABILITIES:
+- Track personal progress
+- Compare personal metrics to evidence-based protocols
+- Get rehabilitation guidance
+- View personal training history
+`}
+
+RESPONSE GUIDELINES:
+- Be concise and actionable
+- Include specific numbers from database when relevant
+- Cite medical research when making training/rehab recommendations
+- If asked about topics outside athletics, politely redirect
+- Never rank athletes in demeaning ways
+- Respect privacy - don't reveal individual weaknesses publicly
+
+When answering:
+- Search your knowledge for sports medicine research (PubMed, JOSPT, AJSM, Br J Sports Med)
+- Ground answers in the provided database
+- Include author names and publication years for research citations
+- Be honest about data limitations`;
+        }
+
+        function getDatabaseView() {
+            if (currentUser.type === 'coach') {
+                return database; // Coaches see everything
+            } else {
+                // Athletes see only their own data
+                return {
+                    athletes: database.athletes.filter(a => a.username === currentUser.username),
+                    workouts: database.workouts.filter(w => w.username === currentUser.username)
+                };
+            }
+        }
+
+        // =====================================================================
+        // AI ASSISTANT - GEMINI INTEGRATION
+        // =====================================================================
+        
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            
+            if (!query) return;
+            
+            const chatMessages = document.getElementById('chat-messages');
+            const sendBtn = document.getElementById('send-btn');
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'user-message';
+            userMsg.innerHTML = `<div class="user-message-content">${escapeHtml(query)}</div>`;
+            chatMessages.appendChild(userMsg);
+            
+            input.value = '';
+            input.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Thinking...';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // Privacy filter
+                const blocked = checkIfQuestionIsBlocked(query);
+                if (blocked) {
+                    throw new Error(blocked);
+                }
+
+                // Get database context
+                const db = getDatabaseView();
+                const systemPrompt = buildSystemPrompt(currentUser, db);
+                const fullPrompt = systemPrompt + '\n\nQuestion: ' + query;
+
+                // Call Gemini API
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: fullPrompt
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                
+                if (!data.candidates || !data.candidates[0]) {
+                    throw new Error('No response from Gemini');
+                }
+
+                let aiResponse = data.candidates[0].content.parts[0].text;
+
+                // Format response
+                aiResponse = escapeHtml(aiResponse);
+                aiResponse = aiResponse.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary);">$1</strong>');
+                aiResponse = aiResponse.replace(/\n/g, '<br>');
+                aiResponse = aiResponse.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color: var(--gsu-blue); text-decoration: underline;">$1</a>');
+
+                const assistantMsg = document.createElement('div');
+                assistantMsg.className = 'assistant-message';
+                assistantMsg.innerHTML = `
+                    <div class="assistant-label">AI ASSISTANT (GEMINI - NO HALLUCINATIONS)</div>
+                    <div class="assistant-content">${aiResponse}</div>
+                `;
+                chatMessages.appendChild(assistantMsg);
+
+            } catch (error) {
+                console.error('Full error:', error);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'assistant-message';
+                errorMsg.innerHTML = `
+                    <div class="assistant-label">NOTICE</div>
+                    <div class="assistant-content" style="border-left-color: var(--warning);">
+                        ${escapeHtml(error.message)}
+                    </div>
+                `;
+                chatMessages.appendChild(errorMsg);
+            } finally {
+                input.disabled = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+                input.focus();
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // =====================================================================
+        // LOGIN SYSTEM
+        // =====================================================================
+        
+        function selectUserType(type) {
+            selectedUserType = type;
+            document.getElementById('athlete-btn').classList.remove('active');
+            document.getElementById('coach-btn').classList.remove('active');
+            document.getElementById(type + '-btn').classList.add('active');
+        }
+
+        function attemptLogin() {
+            const username = document.getElementById('username-input').value.trim();
+            const password = document.getElementById('password-input').value;
+            const errorEl = document.getElementById('login-error');
+
+            if (!selectedUserType) {
+                errorEl.textContent = 'Please select whether you are an Athlete or Coach';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (!/\d/.test(username)) {
+                errorEl.textContent = 'The information entered is incorrect';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const user = validCredentials[username];
+            if (!user) {
+                errorEl.textContent = 'The information entered is incorrect';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (user.password !== password) {
+                errorEl.textContent = 'The information entered is incorrect';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (user.type !== selectedUserType) {
+                errorEl.textContent = 'The information entered is incorrect';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            // Login successful
+            currentUser = {
+                username: username,
+                name: user.name,
+                type: user.type
+            };
+
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-container').style.display = 'flex';
+            document.getElementById('display-username').textContent = user.name;
+            document.getElementById('display-role').textContent = user.type.charAt(0).toUpperCase() + user.type.slice(1);
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedUserType = null;
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('username-input').value = '';
+            document.getElementById('password-input').value = '';
+            document.getElementById('athlete-btn').classList.remove('active');
+            document.getElementById('coach-btn').classList.remove('active');
+            document.getElementById('login-error').style.display = 'none';
+        }
+
+        // =====================================================================
+        // NAVIGATION
+        // =====================================================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = link.getAttribute('data-page');
+                    navigateTo(targetPage);
+                });
+            });
+        });
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
+
+        // =====================================================================
+        // UTILITIES
+        // =====================================================================
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
