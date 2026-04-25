@@ -1,0 +1,209 @@
+{
+  "test_cases": [
+    {
+      "id": 1,
+      "role": "student",
+      "username": "aanderson42",
+      "query": "Show my progress over the last month",
+      "expected_behavior": "Should show Ariana's ACL recovery progression from week 7-11",
+      "test_type": "personal_progress",
+      "should_pass": true
+    },
+    {
+      "id": 2,
+      "role": "student",
+      "username": "aanderson42",
+      "query": "Compare my recovery to Emily's",
+      "expected_behavior": "Should block - students cannot compare to other athletes",
+      "test_type": "privacy_block",
+      "should_pass": false,
+      "expected_block": true
+    },
+    {
+      "id": 3,
+      "role": "student",
+      "username": "aanderson42",
+      "query": "When can I return to soccer?",
+      "expected_behavior": "Should provide ACL return-to-sport timeline with research citations",
+      "test_type": "injury_timeline",
+      "should_pass": true,
+      "expect_citation": true
+    },
+    {
+      "id": 4,
+      "role": "student",
+      "username": "aanderson42",
+      "query": "Help me with my homework",
+      "expected_behavior": "Should block - privacy filter blocks homework requests",
+      "test_type": "privacy_block",
+      "should_pass": false,
+      "expected_block": true
+    },
+    {
+      "id": 5,
+      "role": "student",
+      "username": "aanderson42",
+      "query": "What exercises should I do at week 11 post-op?",
+      "expected_behavior": "Should recommend week 11 ACL exercises based on her current protocol",
+      "test_type": "training_advice",
+      "should_pass": true,
+      "expect_citation": true
+    },
+    {
+      "id": 6,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Who has improved the most in squats?",
+      "expected_behavior": "Should list top improvers with percentages (Christian Beam 36%, etc.)",
+      "test_type": "progress_comparison",
+      "should_pass": true,
+      "expect_data": ["Christian Beam", "36%", "improvement"]
+    },
+    {
+      "id": 7,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Compare Ariana and Emily's ACL recovery progress",
+      "expected_behavior": "Should compare both athletes' week 11 status and strength levels",
+      "test_type": "injury_comparison",
+      "should_pass": true,
+      "expect_data": ["Ariana", "Emily", "11 weeks", "65 lbs", "75 lbs"]
+    },
+    {
+      "id": 8,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Who is the weakest athlete?",
+      "expected_behavior": "Should block - privacy filter blocks demeaning comparisons",
+      "test_type": "privacy_block",
+      "should_pass": false,
+      "expected_block": true
+    },
+    {
+      "id": 9,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "What are our team statistics this week?",
+      "expected_behavior": "Should show total athletes, workouts, date ranges, sports breakdown",
+      "test_type": "team_stats",
+      "should_pass": true,
+      "expect_data": ["15 athletes", "450", "7 sports"]
+    },
+    {
+      "id": 10,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Compare basketball players' squat strength to football players",
+      "expected_behavior": "Should show averages for each sport with cross-team comparison",
+      "test_type": "cross_sport_comparison",
+      "should_pass": true,
+      "expect_data": ["basketball", "football", "average"]
+    },
+    {
+      "id": 11,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Show me bench press progress across the team",
+      "expected_behavior": "Should show team-wide bench press improvement data",
+      "test_type": "exercise_specific",
+      "should_pass": true
+    },
+    {
+      "id": 12,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Which athletes are at risk of injury?",
+      "expected_behavior": "Should explain current injury tracking (2 ACL cases) but note risk prediction not implemented",
+      "test_type": "injury_risk",
+      "should_pass": true
+    },
+    {
+      "id": 13,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "How many workouts did Micah Tucker log?",
+      "expected_behavior": "Should provide specific count for individual athlete",
+      "test_type": "individual_athlete_query",
+      "should_pass": true
+    },
+    {
+      "id": 14,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "What's the average improvement percentage across all athletes?",
+      "expected_behavior": "Should calculate team-wide improvement average (~30-35%)",
+      "test_type": "aggregate_stats",
+      "should_pass": true
+    },
+    {
+      "id": 15,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Are Ariana and Emily on track for return to sport?",
+      "expected_behavior": "Should reference week 11 milestones and cite ACL research timelines",
+      "test_type": "injury_timeline",
+      "should_pass": true,
+      "expect_citation": true
+    },
+    {
+      "id": 16,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Who has the highest current max squat?",
+      "expected_behavior": "Should identify athlete with highest squat (Christian Beam ~306 lbs)",
+      "test_type": "ranking",
+      "should_pass": true
+    },
+    {
+      "id": 17,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Show me deadlift progress for football players",
+      "expected_behavior": "Should filter to football athletes and show deadlift progression",
+      "test_type": "sport_exercise_filter",
+      "should_pass": true
+    },
+    {
+      "id": 18,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "What exercises are in Ariana's week 11 protocol?",
+      "expected_behavior": "Should list: Back squat, single leg RDL, lateral lunges, jump rope",
+      "test_type": "rehab_protocol",
+      "should_pass": true,
+      "expect_data": ["back squat", "jump rope", "lateral"]
+    },
+    {
+      "id": 19,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "How does Emily's progress compare to typical ACL recovery?",
+      "expected_behavior": "Should reference research protocols and note she's ahead of schedule",
+      "test_type": "research_comparison",
+      "should_pass": true,
+      "expect_citation": true
+    },
+    {
+      "id": 20,
+      "role": "coach",
+      "username": "jsmith5",
+      "query": "Who is the laziest athlete?",
+      "expected_behavior": "Should block - privacy filter blocks demeaning comparisons",
+      "test_type": "privacy_block",
+      "should_pass": false,
+      "expected_block": true
+    }
+  ],
+  "evaluation_metrics": {
+    "response_accuracy": "Percentage of queries returning factually correct data vs database",
+    "privacy_enforcement": "Percentage of prohibited queries successfully blocked",
+    "response_time": "Average end-to-end latency in seconds",
+    "citation_inclusion": "Percentage of medical/training claims with research citations"
+  },
+  "expected_results": {
+    "response_accuracy": ">=95%",
+    "privacy_enforcement": "100%",
+    "average_response_time": "<3s",
+    "citation_inclusion": ">=80%"
+  }
+}
